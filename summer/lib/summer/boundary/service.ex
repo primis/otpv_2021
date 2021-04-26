@@ -1,4 +1,8 @@
 defmodule Summer.Boundary.Service do
+  @moduledoc """
+  Forget this, not using in production.
+  """
+
   alias Summer.Core.Counter
 
   def start(string) do
