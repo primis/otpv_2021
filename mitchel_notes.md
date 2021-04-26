@@ -25,4 +25,16 @@ crc: prepare to work, do your work, show your work
 First lab:
 Implement GenServer in summer.ex
 
+Having a solid core allows for easier property-based testing
+
+A supervisor is really lifecyle management
+
+Workers are dependencies (hexpm library, git repo, path)
+
+Property-based testing with proper
+
+Prefer handle_call in GenServer and check response (backpressure)
+
+Prefer to do property-based testing in the core
+
 ```
