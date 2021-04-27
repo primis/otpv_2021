@@ -10,14 +10,22 @@ defmodule Parrot.Eraser do
     plucked_text: "some quote"
   }
   """
-
+  
   @replace_char ?_
   @allowed_chars Enum.to_list(?A..?Z) ++ Enum.to_list(?a..?z)
 
   defstruct ~w[plan text plucked_text]a
 
-  def new(_text, _steps) do
-    # ...
+  def new(text, steps) do
+    length = String.length(text)
+    chunk_size = ceil(length / steps)
+
+    plan =
+      0..length
+      |> Enum.shuffle()
+      |> Enum.chunk_every(chunk_size)
+
+    %__MODULE__{plan: plan, text: text}
   end
 
   def erase(%__MODULE__{plan: [current_step | remaining_steps], plucked_text: plucked_text} = eraser) do
