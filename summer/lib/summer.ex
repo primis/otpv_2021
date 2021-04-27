@@ -20,6 +20,10 @@ defmodule Summer do
     GenServer.cast(counter, :inc)
   end
 
+  def dec(counter) do
+    GenServer.cast(counter, :dec)
+  end
+
   def boom(counter) do
     GenServer.cast(counter, :boom)
   end
@@ -37,6 +41,11 @@ defmodule Summer do
   @impl true
   def handle_call(:get_count, _from, count) do
     {:reply, Counter.render(count), count}
+  end
+
+  @impl true
+  def handle_cast(:dec, count) do
+    {:noreply, Counter.subtract(count, 1)}
   end
 
   @impl true
