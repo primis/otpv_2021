@@ -1,14 +1,14 @@
 defmodule Parrot.Eraser do
   @moduledoc """
-  %Eraser{
-    plan: [
-      [1, 2, 3],
-      [1, 2, 3],
-      [1, 2, 3]
-    ],
-    text: "some quote",
-    plucked_text: "some quote"
-  }
+    %Eraser{
+      plan: [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3]
+      ],
+      text: "some quote",
+      plucked_text: "some quote"
+    }
   """
 
   @replace_char ?_
@@ -21,32 +21,29 @@ defmodule Parrot.Eraser do
     chunk_size = ceil(length / steps)
 
     plan =
-      0..length
+      0..(length - 1)
       |> Enum.shuffle()
       |> Enum.chunk_every(chunk_size)
 
-    %__MODULE__{plan: plan, text: text, plucked_text: text}
+    %__MODULE__{plan: plan, text: text, plucked_text: String.to_charlist(text)}
   end
 
   def erase(
         %__MODULE__{plan: [current_step | remaining_steps], plucked_text: plucked_text} = eraser
       ) do
-    charlist = String.to_charlist(plucked_text)
+    new_plucked_text = Enum.reduce(current_step, plucked_text, &replace_char/2)
 
-    new_plucked_text =
-      Enum.reduce(current_step, charlist, fn position_to_replace, acc_charlist ->
-        case Enum.at(acc_charlist, position_to_replace) in @allowed_chars do
-          true -> List.replace_at(acc_charlist, position_to_replace, @replace_char)
-          false -> acc_charlist
-        end
-      end)
-
-    eraser
-    |> Map.put(:plan, remaining_steps)
-    |> Map.put(:plucked_text, to_string(new_plucked_text))
+    %{eraser | plan: remaining_steps, plucked_text: new_plucked_text}
   end
 
   def text(eraser) do
-    eraser.text
+    to_string(eraser.plucked_text)
+  end
+
+  defp replace_char(position_to_replace, acc_charlist) do
+    case Enum.at(acc_charlist, position_to_replace) in @allowed_chars do
+      true -> List.replace_at(acc_charlist, position_to_replace, @replace_char)
+      false -> acc_charlist
+    end
   end
 end
