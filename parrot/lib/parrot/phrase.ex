@@ -17,4 +17,12 @@ defmodule Parrot.Phrase do
   def find(:ozzy) do
     %{text: "Of all the things I lost, I miss my mind the most.", steps: 4}
   end
+
+  def find(:michael_scott) do
+    %{text: "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.", steps: 6}
+  end
+
+  def find(:kirby) do
+    %{text: "whOOOOOOOOOOOOOOooooooo POP.", steps: 6}
+  end
 end
