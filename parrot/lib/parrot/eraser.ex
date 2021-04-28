@@ -16,16 +16,25 @@ defmodule Parrot.Eraser do
 
   defstruct ~w[plan text plucked_text]a
 
-  def new(text, steps) do
+  def new(text, steps, maybe_shuffle \\ &Enum.shuffle/1) do
     length = String.length(text)
     chunk_size = ceil(length / steps)
 
     plan =
       0..(length - 1)
-      |> Enum.shuffle()
+      |> maybe_shuffle.()
       |> Enum.chunk_every(chunk_size)
 
     %__MODULE__{plan: plan, text: text, plucked_text: String.to_charlist(text)}
+  end
+
+  def erase(%__MODULE__{plan: []} = eraser) do
+    spawn(fn ->
+      Process.sleep(1000)
+      IO.puts("You thought there was more, but it was me, Dio!!")
+    end)
+
+    eraser
   end
 
   def erase(
