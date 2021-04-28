@@ -3,16 +3,7 @@ defmodule Aviary do
   Documentation for `Aviary`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Aviary.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def hatch_parrot(name, flashcard \\ %{text: "A brave new world.", steps: 3}) do
+    {:ok, _hatchling} = DynamicSupervisor.start_child(Aviary.DynamicSupervisor, Parrot.child_spec({name, flashcard}))
   end
 end

@@ -1,8 +1,8 @@
 defmodule Parrot.Phrase do
   alias Parrot.Eraser
 
-  def eraser(atom \\ :itcrowd) do
-    flashcard = find(atom)
+  def eraser(atom_or_map) do
+    flashcard = find(atom_or_map)
     Eraser.new(flashcard.text, flashcard.steps)
   end
 
@@ -25,4 +25,13 @@ defmodule Parrot.Phrase do
   def find(:kirby) do
     %{text: "whOOOOOOOOOOOOOOooooooo POP.", steps: 6}
   end
+
+  def find(%{text: text, steps: steps}) do
+    %{text: text, steps: steps}
+  end
+
+  def find(_invalid) do
+    find(:itcrowd)
+  end
+
 end

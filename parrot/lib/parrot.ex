@@ -10,11 +10,11 @@ defmodule Parrot do
   use GenServer
   alias Parrot.{Eraser, Phrase}
 
-  def start_link({name, phrase}) do
-    GenServer.start_link(__MODULE__, phrase, name: name)
+  def start_link({name, flashcard}) do
+    GenServer.start_link(__MODULE__, flashcard)
   end
 
-  def child_spec({name, _phrase} = args) do
+  def child_spec({name, _flashcard} = args) do
     %{id: name, start: {Parrot, :start_link, [args]}}
   end
 
@@ -24,8 +24,8 @@ defmodule Parrot do
   end
 
   @impl GenServer
-  def init(phrase) do
-    eraser = Phrase.eraser(phrase)
+  def init(flashcard) do
+    eraser = Phrase.eraser(flashcard)
     IO.puts(Eraser.text(eraser))
     {:ok, eraser}
   end
